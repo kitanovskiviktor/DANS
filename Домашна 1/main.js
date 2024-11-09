@@ -24,12 +24,12 @@ async function fetchIssuers() {
 
 async function checkLastDataDate(code) {
 
-  if (!fs.existsSync("finalData.json")) {
+  if (!fs.existsSync("data.json")) {
     return null;
   }
 
   try {
-    const data = JSON.parse(fs.readFileSync("finalData.json", "utf-8"));
+    const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
 
     const issuerData = data.find((item) => item.code === code);
     if (issuerData && issuerData.data.length > 0) {
@@ -90,10 +90,9 @@ async function fetchMissingData(code, startDate, endDate) {
 function storeData(code, newData) {
   let existingData = [];
 
-  // Load existing data if available
-  if (fs.existsSync("finalData.json")) {
+  if (fs.existsSync("data.json")) {
     try {
-      existingData = JSON.parse(fs.readFileSync("finalData.json", "utf-8"));
+      existingData = JSON.parse(fs.readFileSync("data.json", "utf-8"));
     } catch (error) {
       console.error("Error reading JSON data for storing:", error);
     }
@@ -110,7 +109,7 @@ function storeData(code, newData) {
     });
   }
 
-  fs.writeFileSync("finalData.json", JSON.stringify(existingData, null, 2));
+  fs.writeFileSync("data.json", JSON.stringify(existingData, null, 2));
 }
 
 async function main() {
